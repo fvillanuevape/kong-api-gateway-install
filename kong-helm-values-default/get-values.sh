@@ -1,0 +1,1 @@
+helm show values kong/kong > values-default.yaml

@@ -1,0 +1,10 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: correlation-id
+  namespace: apps
+config: 
+  header_name: x-request-id
+  generator: uuid#counter
+  echo_downstream: false
+plugin: correlation-id

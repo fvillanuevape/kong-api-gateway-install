@@ -1,0 +1,140 @@
+_format_version: "3.0"
+services:
+- host: demo-conference-api.upstream
+  id: ff7e81c0-8717-567b-9f4e-e4455e00737a
+  name: demo-conference-api
+  path: /
+  plugins: []
+  port: 80
+  protocol: http
+  routes:
+  - id: 8d70cc32-8ecf-58e2-8e5f-7d25ecd2d647
+    methods:
+    - GET
+    name: demo-conference-api_getsession
+    paths:
+    - ~/session/(?<id>[^#?/]+)$
+    plugins: []
+    regex_priority: 100
+    strip_path: false
+    tags: []
+  - id: 610c3dd8-db5f-581f-a15d-f03b1b6e0dfe
+    methods:
+    - POST
+    name: demo-conference-api_submitsession
+    paths:
+    - ~/session/(?<id>[^#?/]+)/feedback$
+    plugins: []
+    regex_priority: 100
+    strip_path: false
+    tags: []
+  - id: 80cdb335-1e50-5ac8-9529-ca4f26baf1c0
+    methods:
+    - GET
+    name: demo-conference-api_getsessiontopics
+    paths:
+    - ~/session/(?<id>[^#?/]+)/topics$
+    plugins: []
+    regex_priority: 100
+    strip_path: false
+    tags: []
+  - id: ac45c448-a1a9-5438-a6b9-e90e58b52289
+    methods:
+    - GET
+    name: demo-conference-api_getsessions
+    paths:
+    - ~/sessions$
+    plugins: []
+    regex_priority: 200
+    strip_path: false
+    tags: []
+  - id: 319d198d-dda5-56e7-8c67-2592f9687396
+    methods:
+    - GET
+    name: demo-conference-api_getspeaker
+    paths:
+    - ~/speaker/(?<id>[^#?/]+)$
+    plugins: []
+    regex_priority: 100
+    strip_path: false
+    tags: []
+  - id: 5e801c3f-9a0d-5eb7-a25b-3fa35d3eed75
+    methods:
+    - GET
+    name: demo-conference-api_getspeakersessions
+    paths:
+    - ~/speaker/(?<id>[^#?/]+)/sessions$
+    plugins: []
+    regex_priority: 100
+    strip_path: false
+    tags: []
+  - id: 96a5ce57-8dcf-525f-ad1e-1e252c0f6067
+    methods:
+    - GET
+    name: demo-conference-api_getspeakertopics
+    paths:
+    - ~/speaker/(?<id>[^#?/]+)/topics$
+    plugins: []
+    regex_priority: 100
+    strip_path: false
+    tags: []
+  - id: b347c8da-537f-5e90-8673-76e02c68e9e2
+    methods:
+    - GET
+    name: demo-conference-api_getspeakers
+    paths:
+    - ~/speakers$
+    plugins: []
+    regex_priority: 200
+    strip_path: false
+    tags: []
+  - id: bb62e4c2-8a58-57a4-926b-6b4093509028
+    methods:
+    - GET
+    name: demo-conference-api_gettopic
+    paths:
+    - ~/topic/(?<id>[^#?/]+)$
+    plugins: []
+    regex_priority: 100
+    strip_path: false
+    tags: []
+  - id: c271213f-4b65-5059-bf94-4fdf9f5c0a76
+    methods:
+    - GET
+    name: demo-conference-api_gettopicsessions
+    paths:
+    - ~/topic/(?<id>[^#?/]+)/sessions$
+    plugins: []
+    regex_priority: 100
+    strip_path: false
+    tags: []
+  - id: 9477d4ee-43f6-54d4-bfd7-619c52b8a3b7
+    methods:
+    - GET
+    name: demo-conference-api_gettopicspeakers
+    paths:
+    - ~/topic/(?<id>[^#?/]+)/speakers$
+    plugins: []
+    regex_priority: 100
+    strip_path: false
+    tags: []
+  - id: 2dcb3566-ba2d-5e24-b778-56de09842fc0
+    methods:
+    - GET
+    name: demo-conference-api_gettopics
+    paths:
+    - ~/topics$
+    plugins: []
+    regex_priority: 200
+    strip_path: false
+    tags: []
+  tags: []
+upstreams:
+- id: 850d1f61-cd27-561a-9070-ee2613d09b62
+  name: demo-conference-api.upstream
+  tags: []
+  targets:
+  - tags: []
+    target: conferenceapi.azurewebsites.net:80
+  - tags: []
+    target: conferenceapi.azurewebsites.net:443

@@ -1,0 +1,8 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: prometheus
+  namespace: apps
+plugin: prometheus
+config:
+  per_consumer: false

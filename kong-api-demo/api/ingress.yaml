@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: customer-iam-api-ingress
+  namespace: apps
+  annotations:
+    konghq.com/strip-path: "true"
+#    konghq.com/plugins: demo-jwt,correlation-id,rate-limiting,response-transformer,prometheus
+spec:
+  ingressClassName: kong
+  rules:
+  - http:
+      paths:
+      - path: /api/bs/customer-data
+        pathType: Prefix
+        backend:
+          service:
+            name: customer-iam-api
+            port:
+              number: 8080

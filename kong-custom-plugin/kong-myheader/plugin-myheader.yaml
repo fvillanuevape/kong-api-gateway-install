@@ -1,0 +1,8 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: my-custom-plugin
+  namespace: apps
+config:
+  header_value: "Custom Plugin"
+plugin: myheader

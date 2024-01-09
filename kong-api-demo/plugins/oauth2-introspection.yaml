@@ -1,0 +1,9 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: oauth2-introspection-bga
+config: 
+  introspection_url: http://localhost:8082/realms/bga-apps-internas-desarrollo/protocol/openid-connect/token/introspect
+  authorization_value: Basic dG9rZW4tdmFsaWRhdGU6aVo4SXpTeXNyRXkxN0s5UnpnbDZhNFYxV2ZzRXFmaVo=
+  consumer_by: token-validate
+plugin: oauth2-introspection
