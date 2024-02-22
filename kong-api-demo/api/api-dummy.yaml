@@ -18,14 +18,14 @@ spec:
         image: fvillanuevape/customer-iam-api:v1
         ports:
         - containerPort: 8080
-          imagePullPolicy: Always
-          resources:
-            limits:
-              memory: "256Mi"
-              cpu: "500m"
-            requests:
-              memory: "128Mi"
-              cpu: "250m"
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
 ---
 apiVersion: v1
 kind: Service

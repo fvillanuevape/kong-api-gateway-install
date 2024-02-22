@@ -16,6 +16,12 @@ env:
   prefix: /kong_prefix/
   headers: "off"
 
+# Specify Kong's Docker image and repository details here
+image:
+  repository: kong
+  tag: "3.5"
+  pullPolicy: IfNotPresent
+
 status:
   enabled: true
   http:
@@ -178,19 +184,3 @@ autoscaling:
         target:
           type: Utilization
           averageUtilization: 80
-
-
-
-
-
-# securityContext for containers.
-containerSecurityContext:
-  readOnlyRootFilesystem: true
-  allowPrivilegeEscalation: false
-  runAsUser: 1000
-  runAsNonRoot: true
-  seccompProfile:
-    type: RuntimeDefault
-  capabilities:
-    drop:
-    - ALL

@@ -4,9 +4,10 @@ networks:
   kong-net:
     external: false
 services:
-  db:
+  postgres-db:
     image: postgres:15-alpine
     container_name: postgres-db
+    hostname: postgre-database
     volumes:
       - "D:/docker/postgresql/data:/var/lib/postgresql/data"
     restart: always
@@ -21,10 +22,10 @@ services:
     image: kong/kong-gateway:3.5.0.2
     command: kong migrations bootstrap
     depends_on:
-      - db
+      - postgres-db
     environment:
       - KONG_DATABASE=postgres
-      - KONG_PG_HOST=db
+      - KONG_PG_HOST=postgre-database
       - KONG_PG_PASSWORD=kong
       - KONG_PASSWORD=test  
     networks:
@@ -32,9 +33,10 @@ services:
     restart: on-failure
   kong:
     depends_on:
-      - db
+      - postgres-db
     image: kong/kong-gateway:3.5.0.2
     container_name: kong
+    hostname: kong-gateway
     ports:
       - "8000:8000"
       - "8443:8443"
@@ -52,6 +54,9 @@ services:
     restart: on-failure:20
     networks:
       - kong-net
+    volumes:
+      - ./myheader:/usr/local/share/lua/5.1/kong/plugins/myheader
+      - ./oauthintrospection:/usr/local/share/lua/5.1/kong/plugins/oauthintrospection
     environment:
       - KONG_DATABASE=postgres
       - KONG_PG_HOST=db
@@ -61,11 +66,40 @@ services:
       - KONG_ADMIN_ACCESS_LOG=/dev/stdout 
       - KONG_PROXY_ERROR_LOG=/dev/stderr
       - KONG_ADMIN_ERROR_LOG=/dev/stderr
+      - KONG_LOG_LEVEL=debug
       - KONG_ADMIN_LISTEN=0.0.0.0:8001
       - KONG_PROXY_LISTEN=0.0.0.0:8000
       - KONG_ADMIN_GUI_URL=http://localhost:8002
-      - KONG_PLUGINS=bundled
+      - KONG_PLUGINS=bundled,myheader,oauthintrospection
       - KONG_ENFORCE_RBAC=on
       - KONG_ADMIN_GUI_AUTH=basic-auth
       - KONG_ADMIN_GUI_SESSION_CONF={"secret":"secret","storage":"kong","cookie_secure":false}
       - KONG_LICENSE_DATA
+  keycloak:
+    depends_on:
+      - postgres-db
+    image: quay.io/keycloak/keycloak:22.0.0
+    container_name: keycloak
+    hostname: mykeycloak.com
+    ports:
+      - "8080:8080"
+    networks:
+      - kong-net
+    restart: always
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_HOSTNAME_URL=http://mykeycloak.com:8080/
+      - KC_HOSTNAME_STRICT_BACKCHANNEL=true
+      - KC_HOSTNAME_ADMIN_URL=http://admin.mykeycloak.com:8080
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://postgre-database:5432/postgres 
+      - KC_DB_SCHEMA=public
+      - KC_DB_USERNAME=kong
+      - KC_DB_PASSWORD=kong
+      - KC_HEALTH_ENABLED=true
+      - KC_METRICS_ENABLED=true
+      - KC_FEATURES=client-secret-rotation
+      - KC_LOG_LEVEL=DEBUG
+    command:
+      - start-dev

@@ -16,3 +16,11 @@ Para ejecutar el archivo docker compose, debe dirigirse al directorio `kong-dock
 * `docker compose up -d`
 
 ## Desplegar la API a Kong Gateway mediante Deck
+
+
+
+## Desplegar la API a Kong Konnect con un gateway local
+
+Ejecutar el comando para hacer ping con deck
+
+`deck ping --konnect-addr https://us.api.konghq.com/--konnect-token kpat_SO3J8PLh63H0qDNAvx3J4aWQ1w7lvlCplgeto5u2e0PfnX04A --konnect-control-plane-name local-docker-desktop`
