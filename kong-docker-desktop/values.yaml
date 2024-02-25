@@ -15,13 +15,10 @@ env:
   portal_api_error_log: /dev/stderr
   prefix: /kong_prefix/
   headers: "off"
-
-# Specify Kong's Docker image and repository details here
-image:
-  repository: kong
-  tag: "3.5"
-  pullPolicy: IfNotPresent
-
+admin:
+  type: LoadBalancer
+  annotations: 
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 status:
   enabled: true
   http:
@@ -46,13 +43,8 @@ proxy:
   type: LoadBalancer
   loadBalancerClass:
   nameOverride: ""
-  annotations: {}
-  # If terminating TLS at the ELB, the following annotations can be used
-  # "service.beta.kubernetes.io/aws-load-balancer-backend-protocol": "*",
-  # "service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled": "true",
-  # "service.beta.kubernetes.io/aws-load-balancer-ssl-cert": "arn:aws:acm:REGION:ACCOUNT:certificate/XXXXXX-XXXXXXX-XXXXXXX-XXXXXXXX",
-  # "service.beta.kubernetes.io/aws-load-balancer-ssl-ports": "kong-proxy-tls",
-  # "service.beta.kubernetes.io/aws-load-balancer-type": "elb"
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
   labels:
     enable-metrics: "true"
 
@@ -184,3 +176,19 @@ autoscaling:
         target:
           type: Utilization
           averageUtilization: 80
+
+
+
+
+
+# securityContext for containers.
+containerSecurityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  runAsUser: 1000
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+  capabilities:
+    drop:
+    - ALL
